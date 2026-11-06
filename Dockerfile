@@ -1,0 +1,20 @@
+FROM python:3.13-slim
+
+COPY --from=ghcr.io/astral-sh/uv:0.13.0 /uv /usr/local/bin/uv
+
+WORKDIR /app
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
+
+# Dépendances d'abord (couche mise en cache), puis le code
+COPY pyproject.toml uv.lock README.md ./
+RUN uv sync --frozen --no-dev --no-install-project
+
+COPY src ./src
+COPY configs ./configs
+RUN uv sync --frozen --no-dev
+
+ENV PATH="/app/.venv/bin:$PATH"
+VOLUME ["/app/data", "/app/logs"]
+
+ENTRYPOINT ["velib-alert"]
+CMD ["watch"]

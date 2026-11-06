@@ -1,0 +1,32 @@
+[project]
+name = "velib-alert"
+version = "0.1.0"
+description = "Alerte sur les stations Vélib' passées à 0 vélo (ou devenues pleines) entre deux relevés"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.27",
+    "polars>=1.0",
+    "pydantic>=2.7",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+velib-alert = "velib_alert.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8.0", "mypy>=1.10", "types-pyyaml"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/velib_alert"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.mypy]
+strict = true
+plugins = ["pydantic.mypy"]

@@ -1,0 +1,19 @@
+# Configuration de velib-alert (aucune valeur réglable n'est codée en dur)
+api:
+  status_url: https://velib-metropole-opendata.smovengo.cloud/opendata/Velib_Metropole/station_status.json
+  information_url: https://velib-metropole-opendata.smovengo.cloud/opendata/Velib_Metropole/station_information.json
+  timeout_s: 10
+  retries: 3
+
+paths:
+  snapshots_dir: data/snapshots
+  log_file: logs/alertes.log
+
+cleaning:
+  # une station dont la dernière remontée date de plus de N minutes est jugée non fiable
+  max_age_minutes: 120
+  # tolérance sur vélos + places <= capacité (l'API est parfois légèrement incohérente)
+  capacity_tolerance: 2
+
+watch:
+  interval_s: 300
